@@ -1,95 +1,96 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+'use client'
+import Modal from 'react-modal';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
+import data from '../app/components/data/Data'
+
+
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
 export default function Home() {
+  const [products, setProducts] = useState(data);
+
+  console.log("data", data);
+
+  const onDeleteHandler = (id) => {
+    // alert("work");
+
+    let filterHandler = products.filter((item) => item.id !== id);
+    setProducts(filterHandler);
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div style={{ backgroundColor: "white" }}>
+      <div>
+        <h1>Add New Products</h1>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style={{ padding: "20px" }}>ID</th>
+            <th style={{ padding: "20px" }}>Title</th>
+            <th style={{ padding: "20px" }}>Category</th>
+            <th style={{ padding: "30px" }}>Description</th>
+            <th style={{ padding: "20px" }}>Price</th>
+            <th style={{ padding: "20px" }}>Image</th>
+            <th >Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((item) => (
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              <td>{item.title}</td>
+              <td>{item.category}</td>
+              <td>{item.description}</td>
+              <td>{item.price}</td>
+              <td><img src={item.image} alt="" style={{ width: "30px" }} /></td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-outline-danger"
+                  onClick={() => onDeleteHandler(item.id)}
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-warning"
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <Modal
+        isOpen={true}
+        onAfterOpen={()=>null}
+        onRequestClose={()=>null}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+       <div style={{display : "flex", justifyContent : "space-between"}}>
+        <h2>Add More Products</h2>
+        <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
-      </div>
+        <form>
+          <input />
+          <button>Submit</button>
+        </form>
+      </Modal>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    </div>
+  );
 }
