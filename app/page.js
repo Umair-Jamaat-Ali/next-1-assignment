@@ -14,13 +14,14 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    width: '50%',
   },
 };
 
 export default function Home() {
   const [products, setProducts] = useState(data);
 
-  console.log("data", data);
+  // console.log("data", data);
 
   const onDeleteHandler = (id) => {
     // alert("work");
@@ -29,10 +30,42 @@ export default function Home() {
     setProducts(filterHandler);
   }
 
+  const [addModelVisiable, setAddModelVisiable] = useState(false);
+
+  const [addtitle, setAddtitle] = useState(null);
+  const [addCategory, setAddCategory] = useState(null);
+  const [addDescription, setAddDescription] = useState(null);
+  const [addPrice, setAddPrice] = useState(0);
+  const [addImageURL, setAddImageURL] = useState(null);
+
+  const onAddProductHandler = () => {
+
+    if (!(addtitle && addCategory && addDescription && addPrice && addImageURL)) {
+      alert("Add all values !");
+    }
+
+    let newProductAdd = {
+      id: Math.round(Math.random() * 100),
+      title: addtitle,
+      price: addCategory,
+      description: addDescription,
+      category: addPrice,
+      image: addImageURL,
+    }
+    setProducts([newProductAdd, ...products]);
+    setAddModelVisiable(false);
+  }
+
   return (
+
     <div style={{ backgroundColor: "white" }}>
-      <div>
-        <h1>Add New Products</h1>
+      <div className="container " style={{ margin: "15px" }} >
+        <div className="row">
+          <div className="col" style={{ display: "flex", justifyContent: "space-around" }}>
+            <h1>Lists Of Products</h1>
+            <button type="button" className="btn btn-success btn-lg" onClick={() => setAddModelVisiable(true)} >Add More Products</button>
+          </div>
+        </div>
       </div>
       <table>
         <thead>
@@ -75,20 +108,88 @@ export default function Home() {
         </tbody>
       </table>
       <Modal
-        isOpen={true}
-        onAfterOpen={()=>null}
-        onRequestClose={()=>null}
+        isOpen={addModelVisiable}
+        onAfterOpen={() => null}
+        onRequestClose={() => setAddModelVisiable(false)}
         style={customStyles}
         contentLabel="Example Modal"
       >
-       <div style={{display : "flex", justifyContent : "space-between"}}>
-        <h2>Add More Products</h2>
-        <button type="button" class="btn-close" aria-label="Close"></button>
+        <div className="row">
+          <div className="col-md-10">
+            <h4 >Add New Product</h4>
+          </div>
+          <div className="col-md-2">
+            <button type='button' className='btn-close' aria-label='Close' onClick={() => setAddModelVisiable(false)} ></button>
+          </div>
         </div>
-        <form>
-          <input />
-          <button>Submit</button>
-        </form>
+        <div className='mb-3'>
+          <label for="" className='form-label' >Title:</label>
+          <input
+            type="text"
+            className='form-control'
+            id=''
+            placeholder='Enter Title'
+          />
+        </div>
+
+        <div className='mb-3'>
+          <label for="" className='form-label' >Title:</label>
+          <input
+            type="text"
+            className='form-control'
+            id=''
+            placeholder='Enter Title'
+            onChange={(e)=>setAddtitle(e.target.value)}
+          />
+        </div>
+
+        <div className='mb-3'>
+          <label for="" className='form-label' >Category:</label>
+          <input
+            type="text"
+            className='form-control'
+            id=''
+            placeholder='Enter Category'
+            onChange={(e)=>setAddCategory(e.target.value)}
+          />
+        </div>
+
+        <div className='mb-3'>
+          <label for="" className='form-label' >Description:</label>
+          <input
+            type="text"
+            className='form-control'
+            id=''
+            placeholder='Enter Description'
+            onChange={(e)=>setAddDescription(e.target.value)}
+          />
+        </div>
+
+        <div className='mb-3'>
+          <label for="" className='form-label' >Price:</label>
+          <input
+            type="number"
+            className='form-control'
+            id=''
+            placeholder='Enter Price'
+            onChange={(e)=>setAddPrice(e.target.value)}
+          />
+        </div>
+
+        <div className='mb-3'>
+          <label for="" className='form-label' >Image:</label>
+          <input
+            type="text"
+            className='form-control'
+            id=''
+            placeholder='Enter Image'
+            onChange={(e)=>setAddtitle(e.target.value)}
+          />
+        </div>
+
+
+        <button type="button" class="btn btn-success" onClick={onAddProductHandler} >Submit</button>
+
       </Modal>
 
     </div>
