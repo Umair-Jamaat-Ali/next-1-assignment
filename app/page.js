@@ -32,7 +32,7 @@ export default function Home() {
 
   const [addModelVisiable, setAddModelVisiable] = useState(false);
 
-  const [addtitle, setAddtitle] = useState(null);
+  const [addTitle, setAddTitle] = useState(null);
   const [addCategory, setAddCategory] = useState(null);
   const [addDescription, setAddDescription] = useState(null);
   const [addPrice, setAddPrice] = useState(0);
@@ -40,20 +40,42 @@ export default function Home() {
 
   const onAddProductHandler = () => {
 
-    if (!(addtitle && addCategory && addDescription && addPrice && addImageURL)) {
+    if (!(addTitle && addCategory && addDescription && addPrice && addImageURL)) {
       alert("Add all values !");
     }
 
     let newProductAdd = {
       id: Math.round(Math.random() * 100),
-      title: addtitle,
-      price: addCategory,
+      title: addTitle,
+      price: addPrice,
       description: addDescription,
-      category: addPrice,
+      category: addCategory,
       image: addImageURL,
     }
     setProducts([newProductAdd, ...products]);
     setAddModelVisiable(false);
+  }
+
+  const [editModalVisiable, setEditModalVisiable] = useState(false);
+  const [editId, setEditId] = useState("");
+  const [editTitle, setEditTitle] = useState("");
+  const [editCategory, setEditCategory] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [editPrice, setEditPrice] = useState(0);
+  const [editImageURL, setEditImageURL] = useState("");
+
+  const onEditHandler = (item) => {
+    
+    setEditModalVisiable(true);
+
+    setEditId(item.id);
+    console.log("item.id", item.id);
+  setEditTitle(item.title);
+  console.log("item.title", item.title);
+  setEditCategory(item.category);
+  setEditDescription(item.description);
+  setEditPrice(item.price);
+  setEditImageURL(item.image);
   }
 
   return (
@@ -99,6 +121,7 @@ export default function Home() {
                 <button
                   type="button"
                   class="btn btn-outline-warning"
+                  onClick={()=>onEditHandler(item.id)}
                 >
                   Edit
                 </button>
@@ -129,17 +152,7 @@ export default function Home() {
             className='form-control'
             id=''
             placeholder='Enter Title'
-          />
-        </div>
-
-        <div className='mb-3'>
-          <label for="" className='form-label' >Title:</label>
-          <input
-            type="text"
-            className='form-control'
-            id=''
-            placeholder='Enter Title'
-            onChange={(e)=>setAddtitle(e.target.value)}
+            onChange={(e)=>setAddTitle(e.target.value)}
           />
         </div>
 
@@ -183,7 +196,7 @@ export default function Home() {
             className='form-control'
             id=''
             placeholder='Enter Image'
-            onChange={(e)=>setAddtitle(e.target.value)}
+            onChange={(e)=>setAddImageURL(e.target.value)}
           />
         </div>
 
@@ -191,6 +204,90 @@ export default function Home() {
         <button type="button" class="btn btn-success" onClick={onAddProductHandler} >Submit</button>
 
       </Modal>
+
+            {/* eidt model */}
+
+            <Modal
+        isOpen={editModalVisiable}
+        onAfterOpen={() => null}
+        onRequestClose={() => setEditModalVisiable(false)}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className="row">
+          <div className="col-md-10">
+            <h4 >Edit Products</h4>
+          </div>
+          <div className="col-md-2">
+            <button type='button' className='btn-close' aria-label='Close' onClick={() => setEditModalVisiable(false)} ></button>
+          </div>
+        </div>
+        <div className='mb-3'>
+          <label for="" className='form-label' >Title:</label>
+          <input
+            type="text"
+            className='form-control'
+            id=''
+            placeholder='Enter Title'
+            onChange={(e)=>setEditTitle(e.target.value)}
+            value={editTitle}
+          />
+        </div>
+
+        <div className='mb-3'>
+          <label for="" className='form-label' >Category:</label>
+          <input
+            type="text"
+            className='form-control'
+            id=''
+            placeholder='Enter Category'
+            onChange={(e)=>setEditCategory(e.target.value)}
+            value={editCategory}
+          />
+        </div>
+
+        <div className='mb-3'>
+          <label for="" className='form-label' >Description:</label>
+          <input
+            type="text"
+            className='form-control'
+            id=''
+            placeholder='Enter Description'
+            onChange={(e)=>setEditDescription(e.target.value)}
+            value={editDescription}
+          />
+        </div>
+
+        <div className='mb-3'>
+          <label for="" className='form-label' >Price:</label>
+          <input
+            type="number"
+            className='form-control'
+            id=''
+            placeholder='Enter Price'
+            onChange={(e)=>setEditPrice(e.target.value)}
+            value={editPrice}
+          />
+        </div>
+
+        <div className='mb-3'>
+          <label for="" className='form-label' >Image:</label>
+          <input
+            type="text"
+            className='form-control'
+            id=''
+            placeholder='Enter Image'
+            onChange={(e)=>setEditImageURL(e.target.value)}
+            value={editImageURL}
+          />
+        </div>
+
+
+        <button type="button" class="btn btn-success"  >Update</button>
+
+      </Modal>
+
+
 
     </div>
   );
